@@ -74,6 +74,12 @@ int queue_get_count(queue_int_t *handle)
     }
 }
 
+void queue_free(queue_int_t *handle)
+{
+    free(handle->buffer);
+    free(handle);
+}
+
 int main(void)
 {
     queue_int_t *queue = queue_create(16);
