@@ -66,19 +66,22 @@ void heap_max_heapify(max_heap_t *obj, int i)
 {
     int l = heap_left(i);
     int r = heap_right(i);
-    int max_idx = i;
+    int greatest_idx = i;
 
+    // Get the greatest one among parent, left child and right child
     if (l <= obj->idx && obj->arr[l] > obj->arr[i]) {
-        max_idx = l;
+        greatest_idx = l;
     }
 
-    if (r <= obj->idx && obj->arr[r] > obj->arr[max_idx]) {
-        max_idx = r;
+    if (r <= obj->idx && obj->arr[r] > obj->arr[greatest_idx]) {
+        greatest_idx = r;
     }
 
-    if (max_idx != i) {
-        SWAP(obj->arr[i], obj->arr[max_idx]);
-        heap_max_heapify(obj, max_idx);
+    // Swap current with the greatest one and keep heapifying if root is not the
+    // greatest
+    if (greatest_idx != i) {
+        SWAP(obj->arr[i], obj->arr[greatest_idx]);
+        heap_max_heapify(obj, greatest_idx);
     }
 }
 
