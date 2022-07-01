@@ -56,6 +56,7 @@ void heap_insert(max_heap_t *obj, int val)
 
     // Reconstruct binary heap after inserting new element
     // root node has no parent
+    // if child is greater than parent, then swap them
     while (cur_idx != 0 && obj->arr[cur_idx] > obj->arr[heap_parent(cur_idx)]) {
         SWAP(obj->arr[cur_idx], obj->arr[heap_parent(cur_idx)]);
         cur_idx = heap_parent(cur_idx);
@@ -69,6 +70,7 @@ void heap_max_heapify(max_heap_t *obj, int i)
     int greatest_idx = i;
 
     // Get the greatest one among parent, left child and right child
+    // the greatest one needs to be put on the top.
     if (l <= obj->idx && obj->arr[l] > obj->arr[i]) {
         greatest_idx = l;
     }
