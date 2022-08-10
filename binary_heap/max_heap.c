@@ -44,6 +44,10 @@ int heap_peek_max(max_heap_t *obj)
     return obj->arr[0];
 }
 
+/**
+ * time: O(logN)
+ * which N is the counts of the heap
+ */
 void heap_insert(max_heap_t *obj, int val)
 {
     /* Check if full */
@@ -87,6 +91,10 @@ void heap_max_heapify(max_heap_t *obj, int i)
     }
 }
 
+/**
+ * time: O(logN)
+ * which N is the counts of the heap
+ */
 int heap_pop_max(max_heap_t *obj)
 {
     /* The first element is maximum num of the array */
