@@ -3,8 +3,6 @@
  *
  */
 
-
-
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -90,10 +88,16 @@ int main(void)
     }
 
     int res = 0;
+
+    res = queue_peek(queue);
+    printf("peek %d\n", res);
+
     for (i = 0; i < 16; i++) {
         res = queue_pop(queue);
         printf("pop %d\n", res);
     }
+
+    queue_free(queue);
 
     return 0;
 }
