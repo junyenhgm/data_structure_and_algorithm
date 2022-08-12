@@ -112,6 +112,12 @@ int heap_pop_max(max_heap_t *obj)
     return res;
 }
 
+void heap_free(max_heap_t *obj)
+{
+    free(obj->arr);
+    free(obj);
+}
+
 void show_array(int *arr, int size)
 {
     for (int i = 0; i < size; i++) {

@@ -97,6 +97,12 @@ int heap_pop_min(min_heap_t *obj)
     return res;
 }
 
+void heap_free(min_heap_t *obj)
+{
+    free(obj->arr);
+    free(obj);
+}
+
 void show_array(int *arr, int size)
 {
     for (int i = 0; i < size; i++) {
