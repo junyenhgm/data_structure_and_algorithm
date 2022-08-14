@@ -12,6 +12,17 @@ int find_root(int *parent, int n)
     return parent[n];
 }
 
+/* Without considering the ranks of two sub-set, merge to root x */
+void union_set(int *parent, int x, int y)
+{
+    int root_x = find_root(parent, x);
+    int root_y = find_root(parent, y);
+
+    if (root_x != root_y) {
+        parent[root_y] = root_x;
+    }
+}
+
 void union_set(int *parent, int *rank, int x, int y)
 {
     int root_x = find_root(parent, x);
