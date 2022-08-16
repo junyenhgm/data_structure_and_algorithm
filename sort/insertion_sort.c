@@ -6,6 +6,8 @@ i is from 1 to (len-1)
 
 j is from (i - 1) to 0
 
+----
+1.
 compare j-th number with (j+1)-thnum
 
 Ascending order
@@ -14,6 +16,13 @@ if arr[j] > arr[j+1], swap them,
 Descending order
 if arr[j] < arr[j+1], swap them,
 
+----
+2.
+key is arr[i]
+if arr[j] is greater than key, place the element to its behind,
+then place key to the first place.
+
+
 Time: O(N^2)
 Space: O(1)
 
@@ -21,31 +30,25 @@ Space: O(1)
 
 #include <stdio.h>
 
-#define SWAP(a, b) \
-    do {           \
-        a = a ^ b; \
-        b = a ^ b; \
-        a = a ^ b; \
-    } while (0)
-
-
 void insertion_sort(int *arr, int size)
 {
     int i, j;
 
     for (i = 1; i < size; i++) {
+        int key = arr[i];
         for (j = i - 1; j >= 0; j--) {
             /* Ascending order */
-            if (arr[j] < arr[j + 1]) {
+            if (arr[j] < key) {
                 /*
                 Since current arr[j] is the greatest number of the sorted
-                sub-array, so if arr[j] is less than arr[j + 1], then we can say
+                sub-array, so if arr[j] is less than key, then we can say
                 the sub-array from 0 to (j+1) is sorted. No need to swap.
                 */
                 break;
             }
-            SWAP(arr[j], arr[j + 1]);
+            arr[j + 1] = arr[j];
         }
+        arr[j + 1] = key;
     }
 }
 
