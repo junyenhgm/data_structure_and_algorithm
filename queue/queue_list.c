@@ -65,6 +65,25 @@ void queue_push(queue_list_t *obj, int val)
     obj->counts += 1;
 }
 
+/* Jumpt the queue */
+void queue_push_front(queue_list_t *obj, int val)
+{
+    list_node_t *node = malloc(sizeof(list_node_t));
+    node->val = val;
+    node->next = NULL;
+
+    /* If empty */
+    if (obj->front == NULL) {
+        obj->rear = node;
+        obj->front = node;
+    } else {
+        /* Insert to front */
+        node->next = obj->front;
+        obj->front = node;
+    }
+    obj->counts += 1;
+}
+
 /* Pop from front */
 int queue_pop(queue_list_t *obj)
 {
@@ -117,16 +136,23 @@ int main(void)
     queue_list_t *queue = queue_create();
     int i = 0;
 
+    queue_push_front(queue, 300);
+    
     for (i = 0; i < 16; i++) {
         queue_push(queue, i);
     }
 
+    queue_push_front(queue, 100);
+    queue_push_front(queue, 200);
+
     int res = 0;
 
     res = queue_peek(queue);
-    printf("peek %d\n", res);
+    printf("peek current %d\n", res);
 
-    for (i = 0; i < 16; i++) {
+    int count = queue_get_count(queue);
+
+    for (i = 0; i < count; i++) {
         res = queue_pop(queue);
         printf("pop %d\n", res);
     }
