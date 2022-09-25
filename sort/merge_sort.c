@@ -5,45 +5,36 @@
 // Merges two subarrays of arr[].
 // First subarray is arr[l..m]
 // Second subarray is arr[m+1..r]
-void merge(int *arr, int l, int m, int r)
+void merge(int *nums, int left, int mid, int right)
 {
-    int len_l = m - l + 1;
-    int len_r = r - m;
+    int len_left = mid - left + 1;
+    int len_right = right - mid;
 
-    int arr_l[len_l];
-    int arr_r[len_r];
-
-    memcpy(arr_l, arr + l, len_l * sizeof(int));
-    memcpy(arr_r, arr + m + 1, len_r * sizeof(int));
-
-    int i = 0, j = 0;
-    int index = l;
-
-    /* From 0 to len_l */
-    /* From 0 to len_r */
-    while (i < len_l && j < len_r) {
-        if (arr_l[i] <= arr_r[j]) {
-            arr[index] = arr_l[i];
-            i++;
-            index++;
+    int arr_left[len_left];
+    int arr_right[len_right];
+    
+    memcpy(arr_left, &nums[left], len_left * sizeof(int));
+    memcpy(arr_right, &nums[mid + 1], len_right * sizeof(int));
+    
+    int l = 0, r = 0;
+    int index = left;
+    
+    while (l < len_left && r < len_right) {
+        if (arr_left[l] <= arr_right[r]) {
+            nums[index++] = arr_left[l++];
         } else {
-            arr[index] = arr_r[j];
-            j++;
-            index++;
+            nums[index++] = arr_right[r++];
         }
     }
-
-    while (i < len_l) {
-        arr[index] = arr_l[i];
-        i++;
-        index++;
+    
+    while (l < len_left) {
+        nums[index++] = arr_left[l++];
     }
-
-    while (j < len_r) {
-        arr[index] = arr_r[j];
-        j++;
-        index++;
+    
+    while (r < len_right) {
+        nums[index++] = arr_right[r++];
     }
+    
 }
 
 void merg_sort(int *arr, int left, int right)
