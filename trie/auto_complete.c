@@ -142,6 +142,47 @@ int auto_suggestions(trie_node_t *root, char *query)
     return sugs_num;
 }
 
+void elected_string(trie_node_t *root, char *str)
+{
+    // found a string in Trie with the given prefix
+    if (root->is_end) {
+        return;
+    }
+
+    int i;
+    for (i = 0; i < ALPHABET_SIZE; i++) {
+        if (root->children[i]) {
+            // child node character value
+            char child = INDEX_TO_CHAR(i);
+            strncat(str, &child, 1);
+            size_t len = strlen(str);
+            elected_string(root->children[i], str);
+        }
+    }
+}
+
+/* If the number of candidate is 1, then auto complete */
+int get_elected_string(trie_node_t *root, char *query)
+{
+    trie_node_t *crawler = root;
+    size_t len = strlen(query);
+    int i;
+    for (i = 0; i < len; i++) {
+        int ind = CHAR_TO_INDEX(query[i]);
+
+        // no string in the Trie has this prefix
+        if (!crawler->children[ind]) {
+            return 0;
+        }
+
+        crawler = crawler->children[ind];
+    }
+
+    elected_string(crawler, query);
+    return 1;
+}
+
+
 void free_trie_children(trie_node_t *root)
 {
     if (root == NULL) {
@@ -187,10 +228,16 @@ int main(void)
     insert(root, "help");
     insert(root, "helps");
     insert(root, "helping");
-    char query_str[20] = "a";
+    char query_str[20] = "he";
     int comp = auto_suggestions(root, query_str);
 
+    printf("query_str: %s\n", query_str);
     printf("Number: %d\n", comp);
+
+    if (comp == 1) {
+        get_elected_string(root, query_str);
+        printf("%s\n", query_str);
+    }
 
     if (comp == -1) {
         printf("No other strings found with this prefix\n");

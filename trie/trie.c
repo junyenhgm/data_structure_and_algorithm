@@ -141,7 +141,7 @@ void traverse_trie(trie_node_t *root)
 
 void free_trie_children(trie_node_t *root)
 {
-    if (root != NULL) {
+    if (root == NULL) {
         return;
     }
 
