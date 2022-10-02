@@ -26,17 +26,17 @@ max_heap_t *heap_create(int size)
 
 int heap_left_child(int i)
 {
-    return 2 * i + 1;
+    return (i << 1) + 1;
 }
 
 int heap_right_child(int i)
 {
-    return 2 * i + 2;
+    return (i << 1) + 2;
 }
 
 int heap_parent(int i)
 {
-    return (i - 1) / 2;
+    return ((i - 1) >> 1);
 }
 
 int heap_peek_max(max_heap_t *obj)
@@ -67,11 +67,11 @@ void heap_insert(max_heap_t *obj, int val)
     }
 }
 
-void heap_max_heapify(max_heap_t *obj, int i)
+void heap_max_heapify(max_heap_t *obj, int cur_idx)
 {
-    int left_child = heap_left_child(i);
-    int right_child = heap_right_child(i);
-    int greatest_idx = i;
+    int left_child = heap_left_child(cur_idx);
+    int right_child = heap_right_child(cur_idx);
+    int greatest_idx = cur_idx;
 
     // Get the greatest one among parent, left child and right child
     // the greatest one needs to be put on the top.
@@ -85,8 +85,8 @@ void heap_max_heapify(max_heap_t *obj, int i)
 
     // Swap current with the greatest one and keep heapifying if parent is not the
     // greatest
-    if (greatest_idx != i) {
-        SWAP(obj->arr[i], obj->arr[greatest_idx]);
+    if (cur_idx != greatest_idx) {
+        SWAP(obj->arr[cur_idx], obj->arr[greatest_idx]);
         heap_max_heapify(obj, greatest_idx);
     }
 }
