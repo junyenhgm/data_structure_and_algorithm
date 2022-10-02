@@ -75,7 +75,7 @@ void heap_max_heapify(max_heap_t *obj, int cur_idx)
 
     // Get the greatest one among parent, left child and right child
     // the greatest one needs to be put on the top.
-    if (left_child <= obj->idx && obj->arr[left_child] > obj->arr[i]) {
+    if (left_child <= obj->idx && obj->arr[left_child] > obj->arr[cur_idx]) {
         greatest_idx = left_child;
     }
 
