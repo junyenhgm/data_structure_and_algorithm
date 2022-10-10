@@ -50,6 +50,8 @@ struct ListNode *merge_list(struct ListNode *left, struct ListNode *right)
     return dummy.next;
 }
 
+// Time O(NlogN)
+// Space O(LogN)
 struct ListNode *sortList(struct ListNode *head)
 {
     if (head == NULL || head->next == NULL) {
