@@ -30,6 +30,7 @@ int stack_pop(stack_t *obj)
         list_node_t *tmp = obj->node;
         obj->node = obj->node->next;
         free(tmp);
+        obj->size--;
     }
 
     return res;
@@ -84,22 +85,23 @@ int main(void)
     stack_push(&stack, 13);
     stack_push(&stack, 15);
 
-    printf("%d\n", stack_size(&stack));
+    stack_dump(&stack);
+    printf("size %d\n", stack_size(&stack));
+
+    printf("pop %d\n", stack_pop(&stack));
+    printf("pop %d\n", stack_pop(&stack));
+    printf("pop %d\n", stack_pop(&stack));
+    printf("pop %d\n", stack_pop(&stack));
 
     stack_dump(&stack);
-
-    printf("pop %d\n", stack_pop(&stack));
-    printf("pop %d\n", stack_pop(&stack));
-    printf("pop %d\n", stack_pop(&stack));
-    printf("pop %d\n", stack_pop(&stack));
-
-    stack_dump(&stack);
+    printf("size %d\n", stack_size(&stack));
 
     stack_push(&stack, 16);
     stack_push(&stack, 18);
     stack_push(&stack, 20);
 
     stack_dump(&stack);
+    printf("size %d\n", stack_size(&stack));
 
     stack_free(&stack);
 
