@@ -6,6 +6,7 @@
  */
 
 #include <stdio.h>
+#include <stdint.h>
 
 // Euclidean algorithm
 int find_gcd_1(int a, int b)
@@ -47,22 +48,50 @@ int find_gcd_3(int a, int b)
     return find_gcd_3(b % a, a);
 }
 
-#include <sys/time.h>
+
+/**
+ * Read Time Stamp Counter
+ * Loads the current value of the processor's time-stamp counter
+ */
+uint64_t rdtsc(void){
+    unsigned int lo,hi;
+    __asm__ __volatile__ ("rdtsc" : "=a" (lo), "=d" (hi));
+    return ((uint64_t)hi << 32) | lo;
+}
+
+#ifdef _MSC_VER
+# include <intrin.h>
+#else
+# include <x86intrin.h>
+#endif
+
 
 int main(void)
 {
     int a = 98;
     int b = 154;
 
-    int gcd_1 = find_gcd_1(a, b);
-    int gcd_2 = find_gcd_2(a, b);
-    int gcd_3 = find_gcd_3(a, b);
+    uint64_t elapsed = 0;
 
+    elapsed = __rdtsc();
+    int gcd_1 = find_gcd_1(a, b);
+    elapsed = __rdtsc() - elapsed;
+    printf("Time=%ld\n", elapsed);
+
+
+    elapsed = __rdtsc();
+    int gcd_2 = find_gcd_2(a, b);
+    elapsed = __rdtsc() - elapsed;
+    printf("Time=%ld\n", elapsed);
+
+    elapsed = __rdtsc();
+    int gcd_3 = find_gcd_3(a, b);
+    elapsed = __rdtsc() - elapsed;
+    printf("Time=%ld\n", elapsed);
 
     printf("GCD (%d, %d) = %d\n", a, b, gcd_1);
     printf("GCD (%d, %d) = %d\n", a, b, gcd_2);
     printf("GCD (%d, %d) = %d\n", a, b, gcd_3);
-
 
     printf("GCD (%d, %d) = %d\n", 314, 193, find_gcd_3(14, 193));
     printf("GCD (%d, %d) = %d\n", 224, 290, find_gcd_3(224, 90));
