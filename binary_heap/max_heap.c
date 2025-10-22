@@ -1,6 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/**
+
+Treat the Array as a Complete Binary Tree
+For an array of size n, the root is at index 0, 
+the left child is at 2i + 1
+the right child is at 2i + 2
+
+ */
+
+
 typedef struct {
     int *arr;
     int idx;  // current index
@@ -26,27 +36,34 @@ max_heap_t *heap_create(int size)
 
 int heap_left_child(int i)
 {
+    /* i x 2 + 1 */
     return (i << 1) + 1;
 }
 
 int heap_right_child(int i)
 {
+    /* i x 2 + 2 */
     return (i << 1) + 2;
 }
 
 int heap_parent(int i)
 {
+    /* (i - 1) / 2 */
     return ((i - 1) >> 1);
 }
 
+/**
+ * time: O(1)
+ * which N is the counts of the heap
+ */
 int heap_peek_max(max_heap_t *obj)
 {
     return obj->arr[0];
 }
 
 /**
- * time: O(logN)
- * which N is the counts of the heap
+ * time: O(logN), which N is the counts of the heap
+ * space: O(1)
  */
 void heap_insert(max_heap_t *obj, int val)
 {
@@ -55,45 +72,53 @@ void heap_insert(max_heap_t *obj, int val)
         return;
     }
 
+    // increase index of heap by 1
+    // insert the new val to the end of heap
     obj->arr[++obj->idx] = val;
     int cur_idx = obj->idx;
 
     // Reconstruct binary heap after inserting new element
     // root node has no parent
     // if child is greater than parent, then swap them
+    // start from the last index
     while (cur_idx != 0 && obj->arr[cur_idx] > obj->arr[heap_parent(cur_idx)]) {
         SWAP(obj->arr[cur_idx], obj->arr[heap_parent(cur_idx)]);
         cur_idx = heap_parent(cur_idx);
     }
 }
 
-void heap_max_heapify(max_heap_t *obj, int cur_idx)
+/**
+ * time: O(logN)
+ * space: O(1)
+ * heapify the root of sub tree from given index
+ */
+void heap_max_heapify(max_heap_t *obj, int parent_idx)
 {
-    int left_child = heap_left_child(cur_idx);
-    int right_child = heap_right_child(cur_idx);
-    int greatest_idx = cur_idx;
+    int left_child_idx = heap_left_child(parent_idx);
+    int right_child_idx = heap_right_child(parent_idx);
+    int greatest_idx = parent_idx;
 
     // Get the greatest one among parent, left child and right child
     // the greatest one needs to be put on the top.
-    if (left_child <= obj->idx && obj->arr[left_child] > obj->arr[cur_idx]) {
-        greatest_idx = left_child;
+    if (left_child_idx <= obj->idx && obj->arr[left_child_idx] > obj->arr[parent_idx]) {
+        greatest_idx = left_child_idx;
     }
 
-    if (right_child <= obj->idx && obj->arr[right_child] > obj->arr[greatest_idx]) {
-        greatest_idx = right_child;
+    if (right_child_idx <= obj->idx && obj->arr[right_child_idx] > obj->arr[greatest_idx]) {
+        greatest_idx = right_child_idx;
     }
 
     // Swap current with the greatest one and keep heapifying if parent is not the
     // greatest
-    if (cur_idx != greatest_idx) {
-        SWAP(obj->arr[cur_idx], obj->arr[greatest_idx]);
+    if (parent_idx != greatest_idx) {
+        SWAP(obj->arr[parent_idx], obj->arr[greatest_idx]);
         heap_max_heapify(obj, greatest_idx);
     }
 }
 
 /**
- * time: O(logN)
- * which N is the counts of the heap
+ * time: O(logN), which N is the counts of the heap
+ * space: O(1)
  */
 int heap_pop_max(max_heap_t *obj)
 {
